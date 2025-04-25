@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home - TaskConnect</title>
+	<link rel="stylesheet" type="text/css" href="/styles.css">
+
+</head>
+
+<body>
+	<div class="main">
+		<div class="navbar">
+			<div class="icon">
+				<h2 class="logo">
+                    <span class="task">Task</span><span class="connect">Connect</span>
+                </h2>
+			</div>
+            <div class="menu">
+                <ul>
+                    <li><a href="/home">HOME</a></li>
+                    <li><a href="#">ABOUT</a></li>
+                    <li><a href="#">CONTACT</a></li>
+                </ul>
+            </div>
+           
+		</div>
+        <div class="content">
+            <h1>
+                <span class="grey">Professional Home Services,</span> <br> <span class="blue">Right At Your Doorstep!</span>
+            </h1>
+            <p class="par">TaskConnect is a smart digital platform that connects homeowners<br>with verified professionals for home maintenance and repair services
+                <br> From plumbing and electrical work to cleaning and installations,<br>TaskConnect makes booking reliable services quick, transparent, and hassle-free.
+            </p>
+            <button class="cn"><a href="#">Book a Service</a></button>
+            <form class="form" action="/login" method="post">
+                <h2>Sign-in</h2>
+                
+                <input type="email" name="email" placeholder="Enter Email here" required>
+                <input type="password" name="password" placeholder="Enter Password here" required>
+            
+                <button class="btrn" type="submit">Login</button>
+            
+                <p class="link">Don't have an account<br>
+					<a href="/signup">Sign-up</a> here
+                </p>
+            
+                <p class="liw">Log in with</p>
+            
+                <div class="icon">
+                    <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                    <a href="#"><ion-icon name="logo-google"></ion-icon></a>
+                </div>
+            </form>
+            
+        </div>
+
+	</div>	
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+</body>
+</html>

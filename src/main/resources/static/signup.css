@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}  
+body {
+    
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #f0ffff, #00ACC1);
+}
+.container {
+   
+  margin-top: 90px;
+  max-width: 700px;
+  width: 100%;
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+.container .title {
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.container .title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #f0ffff, #00ACC1);
+}
+.content form .user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0 12px 0;
+}
+form .user-details .input-box {
+  margin-bottom: 15px;
+  width: calc(100% / 2 - 20px);
+}
+form .input-box span.details {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.user-details .input-box input {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid {
+  border-color: #00ACC1;
+}
+form .gender-details .gender-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+form .category {
+  display: flex;
+  width: 80%;
+  margin: 14px 0;
+  justify-content: space-between;
+}
+form .category label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+form .category label .dot {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+#dot-1:checked~.category label .one,
+#dot-2:checked~.category label .two,
+#dot-3:checked~.category label .three {
+  background: #00ACC1;
+  border-color: #d9d9d9;
+}
+form input[type="radio"] {
+  display: none;
+}
+form .button {
+  height: 45px;
+  margin: 35px 0
+}
+form .button input {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #f0ffff, #00ACC1);
+}
+form .button input:hover {
+  background: linear-gradient(-135deg, #f0ffff, #00ACC1);
+}
+.navbar {
+    width: 100%;
+    height: 80px;
+    background-color: #DBF1FD; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+ 
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 35px;
+    font-family: Arial, sans-serif;
+    padding-left: 20px;
+    font-weight: 600;
+  }
+  
+  .logo .task {
+    color: #37474F;  
+  }
+  
+  .logo .connect {
+    color: #00ACC1;  
+  }
+  
+ 
+  .menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu ul {
+    display: flex;
+    gap: 50px;
+    list-style: none;
+    margin: 0;
+    
+    padding: 0;
+  }
+  
+  .menu ul li a {
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: #37474F;
+    transition: color 0.4s ease-in-out;
+  }
+  
+  .menu ul li a:hover {
+    color: #00ACC1;
+  }
+  
+
+@media(max-width: 584px) {
+  .container {
+    max-width: 100%;
+  }
+  form .user-details .input-box {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  form .category {
+    width: 100%;
+  }
+  .content form .user-details {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar {
+    width: 5px;
+  }
+}
