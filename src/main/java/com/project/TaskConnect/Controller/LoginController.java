@@ -20,8 +20,12 @@ public class LoginController {
         System.out.println("Login attempt for email: " + email); 
         User user = userService.login(email, password);        
         if (user != null) {
-            model.addAttribute("user", user);
-            return "dashboard"; // user-dashboard
+        	model.addAttribute("user", user);
+        	if(user.getType().equalsIgnoreCase("Customer")) {
+        		return "dashboard";
+        	}
+        	else
+            return "pDashboard"; 
         } else {
             model.addAttribute("error", "Invalid email or password");
             return "home"; 

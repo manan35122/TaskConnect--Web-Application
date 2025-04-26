@@ -16,6 +16,7 @@ public class User {
     private String password;
     private String phonenumber;
     private String gender;
+    private String type;
 
     // Getters and Setters
 
@@ -74,4 +75,12 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
