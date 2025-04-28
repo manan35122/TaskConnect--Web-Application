@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Task List</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <style>
+        .task-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .task-header {
+            padding: 20px;
+            border-bottom: 1px solid #DBF1FD;
+        }
+
+        .task-header h1 {
+            color: #37474F;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .task-table th {
+            background-color: #00ACC1;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .task-table td {
+            padding: 15px;
+            border-bottom: 1px solid #DBF1FD;
+        }
+
+        .task-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .task-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .mark-done-btn,
+        .cancel-btn {
+            padding: 8px 15px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .mark-done-btn {
+            background-color: #4CAF50;
+        }
+
+        .mark-done-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .cancel-btn {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background-color: #FFC107;
+            color: #37474F;
+        }
+
+        .status-completed {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-cancelled {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+        }
+
+        .disabled-action {
+            color: #9E9E9E;
+            font-style: italic;
+        }
+
+        footer {
+            background-color: #37474F;
+            color: white;
+            padding: 50px 0;
+            font-family: Arial, sans-serif;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h2 {
+            color: #00ACC1;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .footer-column p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #DBF1FD;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #546E7A;
+            color: #DBF1FD;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">
+                    <span class="task">Task</span><span class="connect">Connect</span>
+                </h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="/job">MY JOBS</a></li>
+                    <li><a href="#">MANAGE ACCOUNT</a></li>
+                    <li><a href="/home">LOGOUT</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="task-container">
+            <div class="task-header">
+                <h1>My Tasks</h1>
+            </div>
+
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Service Type</th>
+                        <th>Description</th>
+                        <th>Assigned To</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="job : ${jobs}">
+                        <td th:text="${job.id}">1</td>
+                        <td th:text="${job.serviceType}">Service Type</td>
+                        <td th:text="${job.description}">Description</td>
+                        <td>N/A</td>
+                        <td>
+                            <span th:text="${job.status}" th:classappend="'status ' +
+                                     (${job.status} == 'COMPLETED' ? 'status-completed' :
+                                     (${job.status} == 'CANCELLED' ? 'status-cancelled' : 'status-pending'))">
+                                Status
+                            </span>
+                        </td>
+                        <td>
+							<div th:if="${job.status.name() == 'PENDING'}" class="action-buttons">
+							    <button class="mark-done-btn" th:data-id="${job.id}">Mark as Done</button>
+							    <button class="cancel-btn" th:data-id="${job.id}">Cancel</button>
+							</div>
+							<div th:unless="${job.status.name() == 'PENDING'}" class="disabled-action">
+							    No actions available
+							</div>
+
+                        </td>
+						
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h2>TaskConnect</h2>
+                    <p>
+                        TaskConnect is your trusted partner for reliable home and personal services.
+                        Whether you need maintenance, beauty care, tailoring, or car repair, we make
+                        it easy to connect with skilled professionals in your area.
+                    </p>
+                    <p>+12 12345678</p>
+                </div>
+
+                <div class="footer-column">
+                    <h2>Subscribe To Newsletters</h2>
+                    <div style="display: flex; margin-bottom: 20px;">
+                        <input type="email" placeholder="Your email id here"
+                            style="padding: 12px 15px; border: none; border-radius: 5px 0 0 5px; flex-grow: 1; font-size: 16px;">
+                        <button
+                            style="background-color: #00ACC1; color: white; border: none; padding: 0 20px; border-radius: 0 5px 5px 0; font-weight: bold; cursor: pointer;">
+                            Subscribe
+                        </button>
+                    </div>
+                    <p>TaskConnect@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="copyright">
+                &copy; 2025 TaskConnect. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.mark-done-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = this.getAttribute('data-id');
+                
+                fetch('/job/complete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        'id': jobId
+                    })
+                })
+                .then(res => res.text())
+                .then(result => {
+                    if (result === 'success') {
+                        location.reload(); // Refresh the page to update the status
+                    } else {
+                        console.error('Failed to mark job as completed:', result);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error completing job:', error);
+                    alert('There was an error marking the job as completed. Please try again.');
+                });
+            });
+        });
+
+        document.querySelectorAll('.cancel-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = this.getAttribute('data-id');
+                
+                if (confirm('Are you sure you want to cancel this job?')) {
+                    fetch('/job/cancel', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            'id': jobId
+                        })
+                    })
+                    .then(res => res.text())
+                    .then(result => {
+                        if (result === 'success') {
+                            location.reload(); // Refresh the page to update the status
+                        } else {
+                            console.error('Failed to cancel job:', result);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error cancelling job:', error);
+                        alert('There was an error cancelling the job. Please try again.');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

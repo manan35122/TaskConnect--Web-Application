@@ -18,7 +18,6 @@ public class DashboardController {
     public DashboardController(OfferService offerService) {
         this.offerService = offerService;
     }
-
     @GetMapping("/dashboard")
     public String showDashboard(@RequestParam(required = false) String city, Model model) {
         List<String> cities = offerService.getAvailableCities();
