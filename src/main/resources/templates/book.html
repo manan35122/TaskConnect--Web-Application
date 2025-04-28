@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="icon">
+            <h2 class="logo">
+                <span class="task">Task</span><span class="connect">Connect</span>
+            </h2>
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="title">Book a Service</div>
+        <div class="content">
+            <form action="/savebooking" method="post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Full Name</span>
+                        <!-- Use th:value instead of value to bind the model attribute -->
+                        <input type="text" name="name" placeholder="Enter your name" th:value="${name}" required readonly>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Email</span>
+                        <!-- Use th:value instead of value to bind the model attribute -->
+                        <input type="email" name="email" placeholder="Enter your email" th:value="${email}" required readonly>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Service Type</span>
+                        <select name="serviceType" required>
+                            <option value="Home Maintenance">Home Maintenance</option>
+                            <option value="Beauty and Personal Care">Beauty and Personal Care</option>
+                            <option value="Tailoring Services">Tailoring Services</option>
+                            <option value="Car Maintenance">Car Maintenance</option>
+                        </select>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Preferred Date</span>
+                        <input type="date" name="preferredDate" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Description</span>
+                        <textarea name="description" placeholder="Enter a brief description" required></textarea>
+                    </div>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Done">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

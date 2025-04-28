@@ -1,32 +1,523 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>User Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <style>
+        /* Add these new styles for the full-width slider */
+        .slider-container {
+            width: 100%;
+            height: 70vh;
+            /* Adjust height as needed */
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .slider-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 33.33%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(219, 241, 253, 0.5);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: #00ACC1;
+            transform: scale(1.2);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(219, 241, 253, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #37474F;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .slider-arrow:hover {
+            background-color: #00ACC1;
+            color: white;
+        }
+
+        .slider-arrow.left {
+            left: 30px;
+        }
+
+        .slider-arrow.right {
+            right: 30px;
+        }
+
+        /* Weekly Offers Section */
+        .weekly-offers {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .weekly-offers h1 {
+            color: #37474F;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .city-selector {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .city-selector select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 2px solid #00ACC1;
+            background-color: #DBF1FD;
+            color: #37474F;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .city-selector select:focus {
+            border-color: #37474F;
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .services-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -15px;
+            padding-bottom: 20px;
+        }
+
+        .services-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .service-card {
+            flex: 0 0 300px;
+            margin: 0 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            scroll-snap-align: start;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background-color: #00ACC1;
+            color: white;
+            padding: 15px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+            color: #37474F;
+        }
+
+        .price {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .discounted-price {
+            color: #00ACC1;
+            font-weight: bold;
+        }
+
+        .estimated-badge {
+            display: inline-block;
+            background-color: #FF5252;
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .fixed-badge {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .service-description {
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .book-now-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #37474F;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .book-now-btn:hover {
+            background-color: #00ACC1;
+        }
+
+        .slider-nav {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .slider-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #DBF1FD;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background-color: #00ACC1;
+            transform: scale(1.2);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(219, 241, 253, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #37474F;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .slider-arrow:hover {
+            background-color: #00ACC1;
+            color: white;
+        }
+
+        .slider-arrow.left {
+            left: -20px;
+        }
+
+        .slider-arrow.right {
+            right: -20px;
+        }
+
+        .service-categories {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .service-categories h2 {
+            color: #37474F;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: block;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            color: #00ACC1;
+            margin-bottom: 10px;
+        }
+
+        .category-card p {
+            color: #37474F;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Adjust main content to account for full-width slider */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="main">
-    <div class="navbar">
-        <div class="icon">
-            <h2 class="logo">
-                <span class="task">Task</span><span class="connect">Connect</span>
-            </h2>
+        <div class="navbar">
+            <div class="icon">
+                <h2 class="logo">
+                    <span class="task">Task</span><span class="connect">Connect</span>
+                </h2>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#">MY JOBS</a></li>
+                    <li><a href="#">MANAGE ACCOUNT</a></li>
+                    <li><a href="#">LOGOUT</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="menu">
-            <ul>
-				<li><a href="#">MANAGE ACCOUNT</a></li>
-                <li><a href="/home">LOGOUT</a></li>
-            </ul>
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide">
+                    <img src="/TaskConnect.png" alt="Slide 1">
+                </div>
+                <div class="slide">
+                    <img src="/tc.png" alt="Slide 2">
+                </div>
+                <div class="slide">
+                    <img src="/tc2.png" alt="Slide 3">
+                </div>
+            </div>
+            <div class="slider-arrow left" onclick="moveSlide(-1)">&#10094;</div>
+            <div class="slider-arrow right" onclick="moveSlide(1)">&#10095;</div>
+            <div class="slider-nav">
+                <span class="slider-dot active" onclick="goToSlide(0)"></span>
+                <span class="slider-dot" onclick="goToSlide(1)"></span>
+                <span class="slider-dot" onclick="goToSlide(2)"></span>
+            </div>
         </div>
-       
+
+        <section class="weekly-offers">
+            <h1>Weekly Offers</h1>
+
+            <div class="city-selector">
+                <form th:action="@{/dashboard}" method="get">
+                    <select name="city" onchange="this.form.submit()">
+                        <option value="">-- All Cities --</option>
+                        <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"
+                            th:selected="${selectedCity != null && selectedCity.equals(city)}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+
+            <!-- Debug output (temporary) -->
+            <div th:if="${offers != null}">
+            </div>
+
+            <div class="services-container">
+                <div class="services-slider">
+                    <!-- Dynamic Offers Cards -->
+                    <div th:each="offer : ${offers}" class="service-card">
+                        <div class="card-header">
+                            <h3 th:text="${offer.title}">Offer Title</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="service-description" th:text="${offer.description}">Description</p>
+                            <div class="price">
+                                <span class="original-price"
+                                    th:text="'Rs.' + ${#numbers.formatDecimal(offer.originalPrice, 1, 2)}">Rs.1000</span>
+                                <span class="discounted-price"
+                                    th:text="'Rs.' + ${#numbers.formatDecimal(offer.discountedPrice, 1, 2)}">Rs.800</span>
+                                <span
+                                    th:class="${offer.priceType.name() == 'FIXED' ? 'fixed-badge' : 'estimated-badge'}"
+                                    th:text="${offer.priceType.name()}">FIXED</span>
+                            </div>
+                            <a href="#" class="book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Empty state -->
+                    <div th:if="${offers == null or offers.empty}" class="no-offers">
+                        <p>No offers available for the selected city</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="service-categories">
+            <div class="container">
+                <h2>TaskConnect Services</h2>
+                <div class="categories-grid">
+                    <!-- Home Maintenance Services -->
+                    <div class="category-card" onclick="window.location.href='/book';">
+                        <div class="category-icon">
+                            <span>🏠</span>
+                        </div>
+                        <h3>Home Maintenance Services</h3>
+                        <p>Professional services for your home repairs and maintenance</p>
+                    </div>
+
+                    <!-- Beauty and Personal Care -->
+                    <div class="category-card" onclick="window.location.href='/book';">
+                        <div class="category-icon">
+                            <span>💅</span>
+                        </div>
+                        <h3>Beauty and Personal care</h3>
+                        <p>Salon and personal grooming services at your doorstep</p>
+                    </div>
+
+                    <!-- Tailoring Services -->
+                    <div class="category-card" onclick="window.location.href='/book';;">
+                        <div class="category-icon">
+                            <span>✂️</span>
+                        </div>
+                        <h3>Tailoring Services</h3>
+                        <p>Custom tailoring and alterations by skilled professionals</p>
+                    </div>
+
+                    <!-- Car Maintenance Services -->
+                    <div class="category-card" onclick="window.location.href='/book';">
+                        <div class="category-icon">
+                            <span>🚗</span>
+                        </div>
+                        <h3>Car Maintenance Services</h3>
+                        <p>Complete car care and maintenance services</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
     </div>
-    <div class="content">
-    <h1 class="greet" style="margin-top: 2%;">Welcome, <span class="blue" th:text="${user.username}"></span>!</h1></h1>
-    <p class="par">Glad to see you back!</p>
-</div>
-<div class="content">
-    <button class="cn"><a href="#">Book a Service</a></button>
-</div>
-</div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = slides.length;
+
+        function updateSlider() {
+            document.querySelector('.slider').style.transform = `translateX(-${currentSlide * 33.33}%)`;
+
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+        // Simple JavaScript for horizontal scrolling
+        document.querySelectorAll('.offer-card').forEach(card => {
+            card.addEventListener('click', function () {
+                // Add click handler for offer cards if needed
+            });
+        });
+
+        // Auto slide change every 5 seconds
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+    </script>
 </body>
+
 </html>
